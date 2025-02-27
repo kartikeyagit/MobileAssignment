@@ -39,5 +39,6 @@ struct DetailView: View {
         .padding()
         .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

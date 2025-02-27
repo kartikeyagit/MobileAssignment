@@ -14,11 +14,23 @@ class ContentViewModel : ObservableObject {
     @Published var navigateDetail: DeviceData? = nil
     @Published var data: [DeviceData]? = []
 
-    func fetchAPI(completion : @escaping ([DeviceData]) -> ()) {
-        apiService.fetchDeviceDetails(completion: { item in
+    func fetchAPI(completion : @escaping (Result<[DeviceData], APIError>) -> ()) {
+        apiService.fetchDeviceDetails(completion: { result in
             DispatchQueue.main.async {
-                self.data = item
-                completion(item)
+                switch result {
+                case .success(let item):
+                    self.data = item
+                    completion(.success(item))
+                case .failure(let failure):
+                    if failure == .networkError {
+                        // Retrieve from UserDefaults
+                        if let data = UserDefaults.standard.object(forKey: UserDefaultsKeys.networkFailure.rawValue) as? Data,
+                           let devicesData = try? JSONDecoder().decode([DeviceData].self, from: data) {
+                            self.data = devicesData
+                        }
+                    }
+                    completion(.failure(failure))
+                }
             }
         })
     }

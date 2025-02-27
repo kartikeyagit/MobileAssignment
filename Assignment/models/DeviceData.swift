@@ -9,7 +9,7 @@ import Foundation
 
 
 // MARK: - ComputerItem
-struct DeviceData: Decodable, Identifiable, Hashable, Equatable {
+struct DeviceData: Decodable, Encodable, Identifiable, Hashable, Equatable {
     static func == (lhs: DeviceData, rhs: DeviceData) -> Bool {
         return lhs.id == rhs.id
     }
