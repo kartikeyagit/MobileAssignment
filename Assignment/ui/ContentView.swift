@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    private var viewModel = ContentViewModel()
+    @StateObject private var viewModel = ContentViewModel()
     @State private var path: [DeviceData] = [] // Navigation path
 
     var body: some View {
@@ -31,10 +31,12 @@ struct ContentView: View {
                 DetailView(device: computer)
             }
             .onAppear {
-                let navigate = viewModel.navigateDetail
-                if (navigate != nil) {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        path.append(navigate!)
+                viewModel.fetchAPI { result in
+                    let navigate = viewModel.navigateDetail
+                    if (navigate != nil) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            path.append(navigate!)
+                        }
                     }
                 }
             }

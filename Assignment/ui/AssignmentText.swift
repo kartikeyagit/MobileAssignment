@@ -10,10 +10,20 @@ import SwiftUI
 
 struct AssignmentText: View {
     let text: String
-
+    let color: String?
+    let capacity: String?
+ 
     var body: some View {
-        Text(text)
-            .font(.headline)
-            .foregroundColor(Color("#FFFFFF"))
+        VStack(alignment: .leading) {
+            Text(text)
+                .font(.headline)
+            if let color = color {
+                Text("Color: \(color)")
+            }
+            if let capacity = capacity {
+                Text("Capacity: \(capacity)")
+            }
+        }
+        .foregroundColor(.black)
     }
 }

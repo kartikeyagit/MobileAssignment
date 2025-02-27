@@ -14,9 +14,12 @@ class ContentViewModel : ObservableObject {
     @Published var navigateDetail: DeviceData? = nil
     @Published var data: [DeviceData]? = []
 
-    func fetchAPI() {
+    func fetchAPI(completion : @escaping ([DeviceData]) -> ()) {
         apiService.fetchDeviceDetails(completion: { item in
-            self.data = item
+            DispatchQueue.main.async {
+                self.data = item
+                completion(item)
+            }
         })
     }
     
@@ -24,3 +27,4 @@ class ContentViewModel : ObservableObject {
         self.navigateDetail = navigateDetail
     }
 }
+
